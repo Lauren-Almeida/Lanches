@@ -1,6 +1,8 @@
 using Lanches.Context;
+using Lanches.Models;
 using Lanches.Repository;
 using Lanches.Repository.Interfaces;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,8 +13,16 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddTransient<ILancheRepository, LancheRepository>();
 builder.Services.AddTransient<ICategoriaRepository, CategoriaRepository>();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddScoped(sp => CarrinhoCompra.GetCarrinho(sp));
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddMemoryCache();
+builder.Services.AddSession();
+
+
 
 var app = builder.Build();
 
@@ -29,10 +39,24 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseSession();
+
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "categoriaFiltro",
+        pattern: "Lanche/{action}/{categoria?}",
+        defaults: new { Controller = "Lanche", action = "List" });
+
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Home}/{action=Index}/{id?}");
+});
+
+
+
+
 
 app.Run();
