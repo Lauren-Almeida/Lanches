@@ -28,9 +28,14 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Contato" asp-action="Index">Contato</a>
                         </li>
-                        @await Component.InvokeAsync("CategoriaMenu")
+                             @await Component.InvokeAsync("CategoriaMenu")
                     </ul>
                 </div>
+                    <form class="navbar-form navbar-right" asp-controller="Lanche" asp-action="Search" method="get">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Procurar lanche" name="busca" value="@ViewData["busca"]">
+                            </div>
+                    </form>
                  @await Component.InvokeAsync("CarrinhoCompraResumo")
             </div>
         </nav>

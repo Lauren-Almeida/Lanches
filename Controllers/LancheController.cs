@@ -32,20 +32,6 @@ namespace Lanches.Controllers
             }
             else
             {
-                // if (string.Equals("Normal", categoria, StringComparison.OrdinalIgnoreCase))
-                // {
-                //     lanches = _lancheRepository.Lanches
-                //         .Where(l => l.Categoria.CategoriaNome.Equals("Normal"))
-                //         .OrderBy(l => l.Nome);
-                // }
-                // else
-                // {
-                //     lanches = _lancheRepository.Lanches
-                //        .Where(l => l.Categoria.CategoriaNome.Equals("Natural"))
-                //        .OrderBy(l => l.Nome);
-                // }
-                // categoriaAtual = categoria;
-
                 lanches = _lancheRepository.Lanches
                             .Where(l => l.Categoria.CategoriaNome.Equals(categoria))
                             .OrderBy(c => c.Nome);
@@ -66,6 +52,33 @@ namespace Lanches.Controllers
         {
             var lanche = _lancheRepository.Lanches.FirstOrDefault(l => l.LancheId == lancheId);
             return View(lanche);
+        }
+
+        public ViewResult Search(string busca)
+        {
+            IEnumerable<Lanche> lanches;
+            string categoriaAtual = string.Empty;
+
+            if (string.IsNullOrEmpty(busca))
+            {
+                lanches = _lancheRepository.Lanches.OrderBy(l => l.LancheId);
+                categoriaAtual = "Todos os lanches";
+            }
+            else
+            {
+                lanches = _lancheRepository.Lanches
+                        .Where(l => l.Nome.ToLower().Contains(busca.ToLower()));
+
+                if (lanches.Any())
+                    categoriaAtual = "Lanches";
+                else
+                    categoriaAtual = "Nenhum lanche foi encontrado";
+            }
+            return View("~/Views/Lanche/List.cshtml", new LancheListViewModel
+            {
+                Lanches = lanches,
+                CategoriaAtual = categoriaAtual
+            });
         }
 
     }
