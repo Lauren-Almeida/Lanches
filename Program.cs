@@ -3,6 +3,7 @@ using Lanches.Models;
 using Lanches.Repository;
 using Lanches.Repository.Interfaces;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,6 +11,21 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+        .AddEntityFrameworkStores<AppDbContext>()
+        .AddDefaultTokenProviders();
+
+// builder.Services.Configure<IdentityOptions>(options =>
+// {
+//     options.Password.RequireDigit = false;
+//     options.Password.RequireNonAlphanumeric = false;
+//     options.Password.RequireLowercase = false;
+//     options.Password.RequireUppercase = false;
+//     options.Password.RequiredLength = 3;
+//     options.Password.RequiredUniqueChars = 1;
+// });
+
 
 builder.Services.AddTransient<ILancheRepository, LancheRepository>();
 builder.Services.AddTransient<ICategoriaRepository, CategoriaRepository>();
@@ -42,6 +58,8 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseSession();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

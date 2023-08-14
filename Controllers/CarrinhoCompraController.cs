@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Lanches.Models;
 using Lanches.Repository.Interfaces;
 using Lanches.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
@@ -35,7 +36,7 @@ namespace Lanches.Controllers
             return View(carrinhoCompraVM);
         }
 
-        // [HttpGet("Add/{id}")]
+        [Authorize]
         public IActionResult AddItem(int lancheId)
         {
             var lancheSelecionado = _lancheRepository.Lanches
@@ -49,7 +50,8 @@ namespace Lanches.Controllers
             return RedirectToAction("Index");
         }
 
-        //  [HttpGet("Delete/{id}")]
+
+        [Authorize]
         public IActionResult RemoveItem(int lancheId)
         {
             var lancheSelecionado = _lancheRepository.Lanches

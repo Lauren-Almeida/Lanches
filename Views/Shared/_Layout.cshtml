@@ -18,17 +18,18 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        @await Component.InvokeAsync("CategoriaMenu")
+                         @await Component.InvokeAsync("CarrinhoCompraResumo")
                     <ul class="navbar-nav text-dark flex-grow-1">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
-                        @* <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Lanche" asp-action="List">lanche</a>
-                        </li> *@
+                            @* <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Lanche" asp-action="List">lanche</a>
+                                </li> *@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Contato" asp-action="Index">Contato</a>
                         </li>
-                             @await Component.InvokeAsync("CategoriaMenu")
                     </ul>
                 </div>
                     <form class="navbar-form navbar-right" asp-controller="Lanche" asp-action="Search" method="get">
@@ -36,7 +37,7 @@
                                 <input type="text" class="form-control" placeholder="Procurar lanche" name="busca" value="@ViewData["busca"]">
                             </div>
                     </form>
-                 @await Component.InvokeAsync("CarrinhoCompraResumo")
+                 @await Html.PartialAsync("_LoginPartial")
             </div>
         </nav>
     </header>
