@@ -1,13 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
 using Lanches.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
 namespace Lanches.Controllers
 {
@@ -17,7 +11,8 @@ namespace Lanches.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly SignInManager<IdentityUser> _signInManager;
 
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public AccountController(UserManager<IdentityUser> userManager,
+            SignInManager<IdentityUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -43,21 +38,21 @@ namespace Lanches.Controllers
 
             if (user != null)
             {
-                var result = await _signInManager.PasswordSignInAsync(user, loginVM.Password, false, false);
+                var result = await _signInManager.PasswordSignInAsync(user,
+                    loginVM.Password, false, false);
+
                 if (result.Succeeded)
                 {
                     if (string.IsNullOrEmpty(loginVM.ReturnUrl))
                     {
                         return RedirectToAction("Index", "Home");
                     }
-
                     return Redirect(loginVM.ReturnUrl);
                 }
             }
-
-            ModelState.AddModelError("", "Falha ao realizar o login!!!");
+            ModelState.AddModelError("", "Falha ao realizar o login!!");
             return View(loginVM);
-        }
+        }//
 
         [AllowAnonymous]
         public IActionResult Register()
@@ -77,12 +72,13 @@ namespace Lanches.Controllers
 
                 if (result.Succeeded)
                 {
+                    //await _signInManager.SignInAsync(user, isPersistent: false);
+                    await _userManager.AddToRoleAsync(user, "Member");
                     return RedirectToAction("Login", "Account");
                 }
-
                 else
                 {
-                    this.ModelState.AddModelError("Registro", "Falha ao salvar usuário");
+                    this.ModelState.AddModelError("Registro", "Falha ao registrar o usuário");
                 }
             }
             return View(registroVM);
@@ -98,6 +94,9 @@ namespace Lanches.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-
+        public IActionResult AccessDenied()
+        {
+            return View();
+        }
     }
 }

@@ -22,6 +22,10 @@ namespace Lanches.Controllers
 
         public IActionResult List(string categoria)
         {
+            var x = User.Claims.ToList();
+            var y = User.Identities.ToList();
+
+
             IEnumerable<Lanche> lanches;
             string categoriaAtual = string.Empty;
 
