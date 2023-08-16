@@ -1,3 +1,4 @@
+using FastReport.Data;
 using Lanches.Areas.Admin.Servicos;
 using Lanches.Context;
 using Lanches.Models;
@@ -14,6 +15,8 @@ var connection = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options =>
            options.UseSqlServer(connection));
 
+FastReport.Utils.RegisteredObjects.AddConnection(typeof(MsSqlDataConnection));
+
 builder.Services.AddIdentity<IdentityUser, IdentityRole>()
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
@@ -23,6 +26,7 @@ builder.Services.AddTransient<ICategoriaRepository, CategoriaRepository>();
 builder.Services.AddTransient<IPedidoRepository, PedidoRepository>();
 builder.Services.AddScoped<ISeedUserRoleInitial, SeedUserRoleInitial>();
 builder.Services.AddScoped<RelatorioVendasServico>();
+builder.Services.AddScoped<RelatorioLanchesServico>();
 builder.Services.Configure<ConfigurationImagens>(builder.Configuration.GetSection("ConfigurationPastaImagens"));
 builder.Services.AddScoped<GraficoVendasServico>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
