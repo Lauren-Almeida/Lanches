@@ -30,8 +30,7 @@ builder.Services.AddTransient<IPedidoRepository, PedidoRepository>();
 builder.Services.AddScoped<ISeedUserRoleInitial, SeedUserRoleInitial>();
 builder.Services.AddScoped<RelatorioVendasServico>();
 builder.Services.Configure<ConfigurationImagens>(builder.Configuration.GetSection("ConfigurationPastaImagens"));
-
-// builder.Services.AddScoped<GraficoVendasService>();
+builder.Services.AddScoped<GraficoVendasServico>();
 
 // builder.Services.AddAuthorization(options =>
 // {

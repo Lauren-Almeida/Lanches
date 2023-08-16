@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Lanches.Models;
 using Lanches.ViewModels;
 using Microsoft.AspNetCore.Mvc;
