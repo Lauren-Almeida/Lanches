@@ -1,3 +1,4 @@
+using Lanches.Areas.Admin.Servicos;
 using Lanches.Context;
 using Lanches.Models;
 using Lanches.Repository;
@@ -5,6 +6,7 @@ using Lanches.Repository.Interfaces;
 using Lanches.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using ReflectionIT.Mvc.Paging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +25,7 @@ builder.Services.AddTransient<ILancheRepository, LancheRepository>();
 builder.Services.AddTransient<ICategoriaRepository, CategoriaRepository>();
 builder.Services.AddTransient<IPedidoRepository, PedidoRepository>();
 builder.Services.AddScoped<ISeedUserRoleInitial, SeedUserRoleInitial>();
-// builder.Services.AddScoped<RelatorioVendasService>();
+builder.Services.AddScoped<RelatorioVendasServico>();
 // builder.Services.AddScoped<GraficoVendasService>();
 
 // builder.Services.AddAuthorization(options =>
@@ -40,11 +42,11 @@ builder.Services.AddScoped(sp => CarrinhoCompra.GetCarrinho(sp));
 
 builder.Services.AddControllersWithViews();
 
-// builder.Services.AddPaging(options =>
-// {
-//     options.ViewName = "Bootstrap4";
-//     options.PageParameterName = "pageindex";
-// });
+builder.Services.AddPaging(options =>
+{
+    options.ViewName = "Bootstrap4";
+    options.PageParameterName = "pageindex";
+});
 
 builder.Services.AddMemoryCache();
 builder.Services.AddSession();
