@@ -21,11 +21,16 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>()
 // builder.Services.Configure<ConfigurationImagens>(builder.Configuration
 //     .GetSection("ConfigurationPastaImagens"));
 
+//builder.Services.ConfigureApplicationCookie(options => options.AccessDeniedPath = "/Home/AccessDenied");
+
+
 builder.Services.AddTransient<ILancheRepository, LancheRepository>();
 builder.Services.AddTransient<ICategoriaRepository, CategoriaRepository>();
 builder.Services.AddTransient<IPedidoRepository, PedidoRepository>();
 builder.Services.AddScoped<ISeedUserRoleInitial, SeedUserRoleInitial>();
 builder.Services.AddScoped<RelatorioVendasServico>();
+builder.Services.Configure<ConfigurationImagens>(builder.Configuration.GetSection("ConfigurationPastaImagens"));
+
 // builder.Services.AddScoped<GraficoVendasService>();
 
 // builder.Services.AddAuthorization(options =>
